@@ -1,0 +1,105 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>form validation</title>
+    <link href="css/q.css" rel="stylesheet" type="text/css">
+    <link href="css/style.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+    <form class="myform" id="form1" method="post">
+        <p>
+            <label>标题</label>
+            <input id="cname" name="title" minlength="2" type="text" required>
+        </p>
+        <p>
+            <label>图片</label>
+            <input id="file" name="file" type="file" required>
+            <input type="hidden" name="pic">
+        </p>
+        <p>
+            <label>内容</label>
+            <textarea name="description" required></textarea>
+        </p>
+        <p>
+            <input class="btn" id="submit" type="button" value="Submit">
+        </p>
+    </form>
+    <script src="js/jquery.js"></script>
+    <script src="js/jquery.validate.js"></script>
+    <script>
+    $(function() {
+        $(document).on('click', '#submit', function() {
+            /*if (!$("#form1").valid()) {
+                return;
+            };*/
+            $.ajax({
+                url: "add.php",
+                type: "POST",
+                data: $("#form1").serialize(),
+                dataType: "JSON",
+                success: function(r) {
+                    console.log(r);
+                }
+            });
+        });
+        $.validator.setDefaults({
+            submitHandler: function() {
+                alert("提交成功!");
+            }
+        });
+       /* $("#form1").validate({
+            rules: {
+                phone: {
+                    isPhone: true
+                },
+                file: {
+                    fileType: {
+                        types: ["jpg", "jpeg", "png"]
+                    },
+                    maxFileSize: {
+                        "unit": "MB",
+                        "size": 1
+                    }
+                },
+                password: {
+                    required: true,
+                    minlength: 5
+                },
+                confirm_password: {
+                    required: true,
+                    minlength: 5,
+                    equalTo: "#password"
+                },
+                agree: "required"
+            },
+            messages: {
+                name: '请输入姓名',
+                phone: '请输入正确的手机号',
+                email: '请输入正确的Email',
+                comment: '请输入评论'
+            },
+            ignore: "not:hidden",
+            onfocusout: function(element, event) {
+                $element = $(element);
+                if ($element.is(':input') && !$element.is(':password')) {
+                    $element.val($.trim($element.val()));
+                }
+            },
+            invalidHandler: function(form, validator) {
+                var errors = validator.numberOfInvalids();
+                if (errors) {
+                    alert(validator.errorList[0].message);
+                    validator.errorList[0].element.focus();
+                }
+            },
+            errorPlacement: function(error, element) {}
+        });*/
+
+    });
+    </script>
+</body>
+
+</html>
